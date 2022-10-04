@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 // /api/new-meetup
 // POST /api/new-meetup
 
-async function handler(req, res) {
+async function newMeetupHandler(req, res) {
   if (req.method === "POST") {
     const data = req.body;
     const client = await MongoClient.connect(
@@ -14,9 +14,9 @@ async function handler(req, res) {
 
     try {
       const result = await meetupsCollection.insertOne(data);
-      console.log(result);
+      alert(result);
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
 
     client.close();
@@ -26,4 +26,4 @@ async function handler(req, res) {
   }
 }
 
-export default handler;
+export default newMeetupHandler;
