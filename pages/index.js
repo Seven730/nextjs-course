@@ -33,7 +33,6 @@ export async function getStaticProps() {
         title: meetup.title,
         image: meetup.image,
         address: meetup.address,
-        description: meetup.description,
       })),
     },
     /**

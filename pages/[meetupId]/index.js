@@ -1,4 +1,6 @@
 import { MongoClient, ObjectId } from "mongodb";
+import Head from "next/head";
+
 import MeetupDetail from "../../components/meetups/MeetupDetail";
 
 function MeetupDetails(props) {
@@ -24,16 +26,15 @@ export async function getStaticPaths() {
   );
   const db = client.db();
   const meetupsCollection = db.collection("meetups");
-  // fetch only the ids
   const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
 
   client.close();
 
   return {
+    fallback: "blocking",
     paths: meetups.map((meetup) => ({
       params: { meetupId: meetup._id.toString() },
     })),
-    fallback: 'blocking',
   };
 }
 
@@ -47,8 +48,9 @@ export async function getStaticProps(context) {
   );
   const db = client.db();
   const meetupsCollection = db.collection("meetups");
-  // fetch only the selected meetup
-  const selectedMeetup = meetupsCollection.findOne({ _id: ObjectId(meetupId) });
+  const selectedMeetup = await meetupsCollection.findOne({
+    _id: ObjectId(meetupId),
+  });
 
   client.close();
 
@@ -56,9 +58,9 @@ export async function getStaticProps(context) {
     props: {
       meetupData: {
         id: selectedMeetup._id.toString(),
-        image: selectedMeetup.image,
         title: selectedMeetup.title,
         address: selectedMeetup.address,
+        image: selectedMeetup.image,
         description: selectedMeetup.description,
       },
     },
