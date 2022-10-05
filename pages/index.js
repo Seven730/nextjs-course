@@ -14,7 +14,7 @@ function HomePage(props) {
   );
 }
 
-// Static Generation
+// Static Generation (SG)
 export async function getStaticProps() {
   const client = await MongoClient.connect(
     "mongodb+srv://mwojcieszak:Test1234@nextjs.pryfqad.mongodb.net/?retryWrites=true&w=majority"
@@ -36,26 +36,22 @@ export async function getStaticProps() {
       })),
     },
     /**
-     * Incremental static generation
-     * If there are requests this page will be regenerated on the server every 10 seconds
-     * Data is never older than 10 seconds
+     * Incremental Static Generation
+     * If there are requests this page will be regenerated on the server every 120 seconds
+     * Data is never older than 120 seconds
      */
-    revalidate: 10,
+    revalidate: 120,
   };
 }
 
 /**
- * Server-side Generation
- * This is not executed on a client side, but on a server side
+ * Server-side Generation (SSG)
+ * Executed not on a client side, but on a server side
  * It will not run during build process, but always on the server after deployment
  * Page is regenerated with every incoming request
  */
 // export async function getServerSideProps() {
-//   return {
-//     props: {
-//       meetups: DUMMY_MEETUPS,
-//     },
-//   };
+//   return {};
 // }
 
 export default HomePage;
